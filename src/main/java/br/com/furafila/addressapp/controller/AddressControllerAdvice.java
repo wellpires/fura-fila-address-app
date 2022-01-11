@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.furafila.addressapp.exception.AddressTypeNotFoundException;
 import br.com.furafila.addressapp.exception.CityNotFoundException;
+import br.com.furafila.addressapp.exception.ServerErrorApiException;
 import br.com.furafila.addressapp.exception.StateNotFoundException;
 
 @RestControllerAdvice
@@ -41,6 +42,13 @@ public class AddressControllerAdvice {
 		logger.error(atex.getMessage(), atex);
 
 		return ResponseEntity.notFound().build();
+	}
+
+	@ExceptionHandler(ServerErrorApiException.class)
+	public ResponseEntity<Void> handleServerErrorApiException(ServerErrorApiException seEx) {
+		logger.error(seEx.getMessage(), seEx);
+
+		return ResponseEntity.internalServerError().build();
 	}
 
 }
