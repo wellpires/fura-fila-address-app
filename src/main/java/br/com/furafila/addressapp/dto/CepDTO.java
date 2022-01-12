@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CepDTO {
 
+	@JsonProperty("resultado")
+	private String result;
+
 	@JsonProperty("uf")
 	private String postalAbbreviation;
 
@@ -20,6 +23,14 @@ public class CepDTO {
 
 	@JsonProperty("logradouro")
 	private String address;
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
 
 	public String getPostalAbbreviation() {
 		return postalAbbreviation;

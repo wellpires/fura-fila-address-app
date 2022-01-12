@@ -3,6 +3,7 @@ package br.com.furafila.addressapp.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.furafila.addressapp.dto.CepDTO;
 import br.com.furafila.addressapp.dto.GeoCodeResultDTO;
+import br.com.furafila.addressapp.dto.GeometryDTO;
 import br.com.furafila.addressapp.dto.LocationDTO;
 import br.com.furafila.addressapp.response.GeoCodeResponse;
 import br.com.furafila.addressapp.service.GoogleApiService;
@@ -55,8 +57,13 @@ public class GoogleApiServiceImpl implements GoogleApiService {
 
 		LocationDTO locationDTO = new LocationDTO();
 		if (response.getStatusCode().is2xxSuccessful()) {
-			locationDTO = response.getBody().getGeoCodeResultDTO().stream().findFirst().orElseGet(GeoCodeResultDTO::new)
-					.getGeometryDTO().getLocationDTO();
+			GeometryDTO geometryDTO = response.getBody().getGeoCodeResultDTO().stream().findFirst()
+					.orElseGet(GeoCodeResultDTO::new).getGeometryDTO();
+
+			if (Objects.nonNull(geometryDTO)) {
+				locationDTO = geometryDTO.getLocationDTO();
+			}
+
 		}
 
 		return locationDTO;
