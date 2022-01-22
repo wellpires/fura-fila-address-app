@@ -33,9 +33,7 @@ public class DistrictServiceImpl implements DistrictService {
 
 		newDistrict.setCity(newCity);
 
-		District districtSaved = districtRepository.save(newDistrict);
-
-		return districtSaved.getId();
+		return districtRepository.save(newDistrict).getId();
 	}
 
 }

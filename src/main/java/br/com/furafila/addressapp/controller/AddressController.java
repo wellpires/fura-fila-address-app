@@ -27,7 +27,7 @@ public class AddressController implements AddressResource {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> save(@RequestBody NewAddressRequest newAddressRequest) {
 
-		addressService.save(newAddressRequest.getNewAddressDTO());
+		this.addressService.save(newAddressRequest.getNewAddressDTO());
 
 		return ResponseEntity.noContent().build();
 	}

@@ -24,6 +24,14 @@ public class CepApiServiceImpl implements CepApiService {
 	@Autowired
 	private RestTemplate client;
 
+	public CepApiServiceImpl() {
+	}
+
+	public CepApiServiceImpl(String cepApiUrl, RestTemplate client) {
+		this.cepApiUrl = cepApiUrl;
+		this.client = client;
+	}
+
 	@Override
 	public CepDTO findNewAddress(Integer postalCode) {
 

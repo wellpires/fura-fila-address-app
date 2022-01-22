@@ -44,23 +44,24 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public void save(NewAddressDTO newAddressDTO) {
 
+		Address address = addressRepository.findByPostalCodeAndAddressIgnoreCase(newAddressDTO.getPostalCode(),
+				newAddressDTO.getAddress());
+
+		if (Objects.nonNull(address)) {
+			return;
+		}
+
 		long cityId = cityService.createCity(newAddressDTO.getCity(), newAddressDTO.getPostalAbbreviation());
 
 		long districtId = districtService.createDistrict(newAddressDTO.getDistrict(), cityId);
 
 		long addressTypeId = addressTypeService.findAddressTypeIdByName(newAddressDTO.getAddressType());
 
-		Address address = addressRepository.findByPostalCodeAndAddressIgnoreCase(newAddressDTO.getPostalCode(),
-				newAddressDTO.getAddress());
+		Address newAddress = new AddressBuilder().postalCode(newAddressDTO.getPostalCode())
+				.address(newAddressDTO.getAddress()).latitude(newAddressDTO.getLatitude())
+				.longitude(newAddressDTO.getLongitude()).addressTypeId(addressTypeId).districtId(districtId).build();
 
-		if (Objects.isNull(address)) {
-			Address newAddress = new AddressBuilder().postalCode(newAddressDTO.getPostalCode())
-					.address(newAddressDTO.getAddress()).latitude(newAddressDTO.getLatitude())
-					.longitude(newAddressDTO.getLongitude()).addressTypeId(addressTypeId).districtId(districtId)
-					.build();
-
-			addressRepository.save(newAddress);
-		}
+		addressRepository.save(newAddress);
 
 	}
 

@@ -23,13 +23,13 @@ public class CityServiceImpl implements CityService {
 	@Override
 	public long createCity(String cityName, String postalAbbreviation) {
 
-		long stateId = stateService.findIdByPostalAbbreviation(postalAbbreviation);
-
 		City cityFounded = cityRepository.findByNameAndPostalAbbreviation(cityName, postalAbbreviation);
 
 		if (Objects.nonNull(cityFounded)) {
 			return cityFounded.getId();
 		}
+
+		long stateId = stateService.findIdByPostalAbbreviation(postalAbbreviation);
 
 		City city = new City();
 		city.setName(cityName);
@@ -38,9 +38,7 @@ public class CityServiceImpl implements CityService {
 		state.setId(stateId);
 		city.setState(state);
 
-		City citySaved = cityRepository.save(city);
-
-		return citySaved.getId();
+		return cityRepository.save(city).getId();
 	}
 
 }
