@@ -3,6 +3,7 @@ package br.com.furafila.addressapp.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -10,6 +11,7 @@ import br.com.furafila.addressapp.exception.AddressTypeNotFoundException;
 import br.com.furafila.addressapp.exception.CityNotFoundException;
 import br.com.furafila.addressapp.exception.ServerErrorApiException;
 import br.com.furafila.addressapp.exception.StateNotFoundException;
+import br.com.furafila.addressapp.response.ErrorResponse;
 
 @RestControllerAdvice
 public class AddressControllerAdvice {
@@ -49,6 +51,15 @@ public class AddressControllerAdvice {
 		logger.error(seEx.getMessage(), seEx);
 
 		return ResponseEntity.internalServerError().build();
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException maEx) {
+
+		String defaultMessage = maEx.getBindingResult().getFieldError().getDefaultMessage();
+		logger.error(defaultMessage, maEx.getBindingResult().getFieldError());
+
+		return ResponseEntity.badRequest().body(new ErrorResponse(defaultMessage));
 	}
 
 }

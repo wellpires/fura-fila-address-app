@@ -1,10 +1,10 @@
 {
-	"city": "Osasco",
-	"district": "Centro",
-	"postalAbbreviation": "SP",
-	"postalCode": 6016060,
-	"address": "Tenente Avelar Pires de Azevedo",
-	"addressType": "Rua",
-	"latitude": -23.5307632,
-	"longitude": -46.7796868
+   "city":"Osasco",
+   "district":"Centro",
+   "postalAbbreviation":"SP",
+   "postalCode":6016060,
+   "address":"Tenente Avelar Pires de Azevedo",
+   "addressType":"Rua",
+   "latitude":-23.5307632,
+   "longitude":-46.7796868
 }

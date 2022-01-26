@@ -43,7 +43,7 @@ public class CepApiServiceImpl implements CepApiService {
 		CepDTO cepDTO = client.getForEntity(uriComponents.toUriString(), CepDTO.class).getBody();
 
 		if (Integer.parseInt(cepDTO.getResult()) != 1) {
-			logger.warn(String.format("%s not found in CEP API!", postalCodePadded));
+			logger.warn("{} not found in CEP API!", postalCodePadded);
 		}
 
 		return cepDTO;

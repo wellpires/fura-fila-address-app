@@ -36,14 +36,23 @@ public class GoogleApiServiceImpl implements GoogleApiService {
 	@Autowired
 	private RestTemplate client;
 
+	public GoogleApiServiceImpl() {
+	}
+
+	public GoogleApiServiceImpl(String geoCodeUrl, String googleApiKey, RestTemplate client) {
+		this.geoCodeUrl = geoCodeUrl;
+		this.googleApiKey = googleApiKey;
+		this.client = client;
+
+	}
+
 	@Override
 	public LocationDTO findGeoCode(CepDTO newAddress) {
 
-		String addressFormatted = String.format("%s,%s,%s,%s,BR", newAddress.getAddress(), newAddress.getDistrict(),
-				newAddress.getCity(), newAddress.getPostalAbbreviation());
-
 		String urlEncoded = "";
 		try {
+			String addressFormatted = String.format("%s,%s,%s,%s,BR", newAddress.getAddress(), newAddress.getDistrict(),
+					newAddress.getCity(), newAddress.getPostalAbbreviation());
 			urlEncoded = URLEncoder.encode(addressFormatted, StandardCharsets.UTF_8.toString());
 		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage(), e);

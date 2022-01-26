@@ -1,5 +1,7 @@
 package br.com.furafila.addressapp.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class AddressController implements AddressResource {
 
 	@Override
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> save(@RequestBody NewAddressRequest newAddressRequest) {
+	public ResponseEntity<Void> save(@RequestBody @Valid NewAddressRequest newAddressRequest) {
 
 		this.addressService.save(newAddressRequest.getNewAddressDTO());
 

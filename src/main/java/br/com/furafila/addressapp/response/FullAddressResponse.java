@@ -9,6 +9,9 @@ public class FullAddressResponse {
 	@JsonProperty("address")
 	private FullAddressDTO fullAddressDTO;
 
+	public FullAddressResponse() {
+	}
+
 	public FullAddressResponse(FullAddressDTO fullAddressDTO) {
 		this.fullAddressDTO = fullAddressDTO;
 	}
