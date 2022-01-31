@@ -1,5 +1,8 @@
 package br.com.furafila.addressapp.controller;
 
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +59,10 @@ public class AddressControllerAdvice {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException maEx) {
 
+		String rejectedValue = maEx.getBindingResult().getFieldErrors().stream().filter(Objects::nonNull).findFirst()
+				.map(item -> String.valueOf(item.getRejectedValue())).orElseGet(() -> StringUtils.EMPTY);
 		String defaultMessage = maEx.getBindingResult().getFieldError().getDefaultMessage();
-		logger.error(defaultMessage, maEx.getBindingResult().getFieldError());
+		logger.error("{} - Value: {}", defaultMessage, rejectedValue);
 
 		return ResponseEntity.badRequest().body(new ErrorResponse(defaultMessage));
 	}
