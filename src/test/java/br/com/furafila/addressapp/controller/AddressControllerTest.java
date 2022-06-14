@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ class AddressControllerTest {
 		this.mockMvc
 				.perform(post(ADDRESS_PATH).contentType(MediaType.APPLICATION_JSON)
 						.content(mapper.writeValueAsString(new NewAddressRequest(newAddressDTO))))
-				.andExpect(status().isNoContent()).andReturn();
+				.andExpect(status().isNoContent()).andDo(print()).andReturn();
 
 	}
 
@@ -223,7 +224,7 @@ class AddressControllerTest {
 
 		mockMvc.perform(post(ADDRESS_PATH).contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(new NewAddressRequest(newAddressDTO))))
-				.andExpect(status().isNotFound()).andReturn();
+				.andExpect(status().isNotFound()).andDo(print()).andReturn();
 
 	}
 
@@ -234,7 +235,7 @@ class AddressControllerTest {
 
 		mockMvc.perform(post(ADDRESS_PATH).contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(new NewAddressRequest(newAddressDTO))))
-				.andExpect(status().isNotFound()).andReturn();
+				.andExpect(status().isNotFound()).andDo(print()).andReturn();
 
 	}
 
@@ -244,7 +245,7 @@ class AddressControllerTest {
 		MvcResult result = mockMvc
 				.perform(post(ADDRESS_PATH).contentType(MediaType.APPLICATION_JSON)
 						.content(mapper.writeValueAsString(newAddressRequest)))
-				.andExpect(status().isBadRequest()).andReturn();
+				.andExpect(status().isBadRequest()).andDo(print()).andReturn();
 
 		ErrorResponse errorResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
 
@@ -271,7 +272,7 @@ class AddressControllerTest {
 		URI uri = UriComponentsBuilder.fromPath(FIND_ADDRESS_PATH).buildAndExpand(params).toUri();
 
 		MvcResult result = mockMvc.perform(get(uri).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andReturn();
+				.andDo(print()).andReturn();
 
 		FullAddressResponse fullAddressResponse = mapper.readValue(result.getResponse().getContentAsString(),
 				FullAddressResponse.class);
@@ -299,7 +300,8 @@ class AddressControllerTest {
 		params.put("postalCode", 22555852);
 		URI uri = UriComponentsBuilder.fromPath(FIND_ADDRESS_PATH).buildAndExpand(params).toUri();
 
-		mockMvc.perform(get(uri).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError());
+		mockMvc.perform(get(uri).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError())
+				.andDo(print());
 
 	}
 
@@ -312,8 +314,8 @@ class AddressControllerTest {
 		params.put("postalCode", 22555852);
 		URI uri = UriComponentsBuilder.fromPath(FIND_ADDRESS_PATH).buildAndExpand(params).toUri();
 
-		mockMvc.perform(get(uri).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError());
-
+		mockMvc.perform(get(uri).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError())
+				.andDo(print());
 	}
 
 }
